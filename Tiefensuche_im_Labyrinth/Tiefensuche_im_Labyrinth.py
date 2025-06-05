@@ -3,13 +3,13 @@
 import tkinter as tk
 import random
 
-# Constants
-CELL_SIZE = 20
-GRID_WIDTH = 20
-GRID_HEIGHT = 20
-DELAY = 30  # milliseconds between steps
-BACKGROUNDCOLOR = "#ffffff"  # maze background color
-CURSORCOLOR = "#a9c6f5"
+# Constants used in maze generation
+CELL_SIZE = 20  # Pixel size of each cell
+GRID_WIDTH = 20  # Maze width in cells
+GRID_HEIGHT = 20  # Maze height in cells
+DELAY = 30  # Delay in milliseconds between animation steps
+BACKGROUNDCOLOR = "#ffffff"  # Canvas background color (white)
+CURSORCOLOR = "#a9c6f5"  # Color to highlight current cell (light blue)
 
 
 class Cell:
