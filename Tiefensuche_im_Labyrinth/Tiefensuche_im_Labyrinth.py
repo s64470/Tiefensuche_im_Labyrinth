@@ -1,6 +1,7 @@
 import tkinter as tk
 import random
 import heapq
+import time
 
 CELL_SIZE = 20
 DELAY = 30
@@ -159,11 +160,17 @@ class MazeApp:
             else:
                 self.current = self.stack.pop()
             self.canvas.after(DELAY, self.step)
+        # in MazeApp.step(), wenn Maze fertig:
         elif not self.maze_generated:
             self.maze_generated = True
             start = self.grid[0][0]
             goal = self.grid[self.width - 1][self.height - 1]
+
+            start_time = time.time()
             a_star_solver(self.grid, start, goal, self.canvas, self.width, self.height)
+            end_time = time.time()
+
+            print(f"A* Laufzeit: {end_time - start_time:.4f} Sekunden")
 
 
 def main():
@@ -183,6 +190,7 @@ def main():
     # Fensterposition zentrieren
     window_width = 500
     window_height = 500
+
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x = (screen_width - window_width) // 2
