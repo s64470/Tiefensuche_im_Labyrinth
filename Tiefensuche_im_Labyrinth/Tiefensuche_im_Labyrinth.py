@@ -2,16 +2,12 @@ import tkinter as tk
 import random
 import heapq
 
-# Constants
 CELL_SIZE = 20
-GRID_WIDTH = 20
-GRID_HEIGHT = 20
 DELAY = 30
 BACKGROUNDCOLOR = "#ffffff"
 CURSORCOLOR = "#a9c6f5"
 
 
-# Cell class definition
 class Cell:
     def __init__(self, x, y):
         self.x, self.y = x, y
@@ -42,17 +38,16 @@ class Cell:
         return (self.x, self.y) == (other.x, other.y)
 
 
-# Grid creation and utility
-def create_grid():
-    return [[Cell(x, y) for y in range(GRID_HEIGHT)] for x in range(GRID_WIDTH)]
+def create_grid(width, height):
+    return [[Cell(x, y) for y in range(height)] for x in range(width)]
 
 
-def get_neighbors(grid, cell):
+def get_neighbors(grid, cell, width, height):
     neighbors = []
     directions = {"top": (0, -1), "right": (1, 0), "bottom": (0, 1), "left": (-1, 0)}
     for direction, (dx, dy) in directions.items():
         nx, ny = cell.x + dx, cell.y + dy
-        if 0 <= nx < GRID_WIDTH and 0 <= ny < GRID_HEIGHT:
+        if 0 <= nx < width and 0 <= ny < height:
             neighbor = grid[nx][ny]
             if not neighbor.visited:
                 neighbors.append((direction, neighbor))
@@ -65,13 +60,11 @@ def remove_walls(current, next_cell, direction):
     next_cell.walls[opposite[direction]] = False
 
 
-# Heuristic for A*
 def heuristic(a, b):
     return abs(a.x - b.x) + abs(a.y - b.y)
 
 
-# A* solver
-def a_star_solver(grid, start, goal, canvas):
+def a_star_solver(grid, start, goal, canvas, width, height):
     open_set = []
     heapq.heappush(open_set, (0, id(start), start))
     came_from = {}
@@ -104,7 +97,7 @@ def a_star_solver(grid, start, goal, canvas):
         }.items():
             if not current.walls[direction]:
                 nx, ny = current.x + dx, current.y + dy
-                if 0 <= nx < GRID_WIDTH and 0 <= ny < GRID_HEIGHT:
+                if 0 <= nx < width and 0 <= ny < height:
                     neighbor = grid[nx][ny]
                     temp_g_score = g_score[current] + 1
                     if temp_g_score < g_score[neighbor]:
@@ -120,7 +113,6 @@ def a_star_solver(grid, start, goal, canvas):
                             canvas.update()
 
 
-# Reconstruct and show path
 def reconstruct_path(came_from, current, canvas):
     while current in came_from:
         current = came_from[current]
@@ -129,17 +121,18 @@ def reconstruct_path(came_from, current, canvas):
         canvas.after(DELAY)
 
 
-# Main app class
 class MazeApp:
-    def __init__(self, root):
+    def __init__(self, root, width, height):
+        self.width = width
+        self.height = height
         self.canvas = tk.Canvas(
             root,
-            width=GRID_WIDTH * CELL_SIZE,
-            height=GRID_HEIGHT * CELL_SIZE,
+            width=width * CELL_SIZE,
+            height=height * CELL_SIZE,
             bg=BACKGROUNDCOLOR,
         )
         self.canvas.pack()
-        self.grid = create_grid()
+        self.grid = create_grid(width, height)
         self.stack = []
         self.current = self.grid[0][0]
         self.current.visited = True
@@ -156,7 +149,7 @@ class MazeApp:
         self.current.highlight(self.canvas, CURSORCOLOR)
 
         if self.stack:
-            neighbors = get_neighbors(self.grid, self.current)
+            neighbors = get_neighbors(self.grid, self.current, self.width, self.height)
             if neighbors:
                 direction, next_cell = random.choice(neighbors)
                 remove_walls(self.current, next_cell, direction)
@@ -169,15 +162,39 @@ class MazeApp:
         elif not self.maze_generated:
             self.maze_generated = True
             start = self.grid[0][0]
-            goal = self.grid[GRID_WIDTH - 1][GRID_HEIGHT - 1]
-            a_star_solver(self.grid, start, goal, self.canvas)
+            goal = self.grid[self.width - 1][self.height - 1]
+            a_star_solver(self.grid, start, goal, self.canvas, self.width, self.height)
 
 
-# Launch GUI
 def main():
+    def start_maze():
+        size = size_var.get()
+        width = height = int(size)
+        for widget in root.winfo_children():
+            widget.destroy()
+        MazeApp(root, width, height)
+
     root = tk.Tk()
     root.title("Maze Generator with A* Solver")
-    app = MazeApp(root)
+
+    # Disable resizing
+    root.resizable(False, False)
+
+    # Fensterposition zentrieren
+    window_width = 500
+    window_height = 500
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+    root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+    # Dropdown
+    size_var = tk.StringVar(value="20")
+    tk.Label(root, text="Maze Size:").pack(pady=10)
+    tk.OptionMenu(root, size_var, "5", "10", "15", "20", "25", "30").pack()
+    tk.Button(root, text="Start Maze", command=start_maze).pack(pady=10)
+
     root.mainloop()
 
 
