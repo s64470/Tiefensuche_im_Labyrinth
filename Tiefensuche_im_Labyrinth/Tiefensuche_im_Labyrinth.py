@@ -124,7 +124,7 @@ def a_star_solver(grid, start, goal, canvas):
 def reconstruct_path(came_from, current, canvas):
     while current in came_from:
         current = came_from[current]
-        current.highlight(canvas, "green")
+        current.highlight(canvas, "#b8cfc0")
         canvas.update()
         canvas.after(DELAY)
 
