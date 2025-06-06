@@ -199,12 +199,20 @@ def main():
     root.title("Maze Generator with A* Solver")
     root.resizable(False, False)
 
+    # Set fixed size for the initial menu window
+    initial_width = 400
+    initial_height = 150
+
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
+    x = (screen_width - initial_width) // 2
+    y = (screen_height - initial_height) // 2
+    root.geometry(f"{initial_width}x{initial_height}+{x}+{y}")
 
-    # Show dropdown menu
+    # UI elements
     size_var = tk.StringVar(value="20")
-    tk.Label(root, text="Maze Size:").pack(pady=(10, 0))
+
+    tk.Label(root, text="Select Maze Size:", font=("Arial", 12)).pack(pady=(20, 5))
     tk.OptionMenu(root, size_var, "5", "10", "15", "20", "25", "30").pack()
     tk.Button(root, text="Start Maze", command=lambda: start_maze(size_var)).pack(
         pady=10
