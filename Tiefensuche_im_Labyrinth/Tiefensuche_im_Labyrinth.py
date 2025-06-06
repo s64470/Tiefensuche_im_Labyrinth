@@ -9,6 +9,8 @@ CELL_SIZE = 20
 DELAY = 30
 BACKGROUNDCOLOR = "#ffffff"
 CURSORCOLOR = "#a9c6f5"
+FONTSTYLE = "Arial"
+FONTSIZE = "11"
 global size_var
 
 
@@ -216,13 +218,18 @@ def main():
 
     # tk.Label(root, text="Select Maze Size:", font=("Arial", 12)).pack(pady=(20, 5))
     # tk.OptionMenu(root, size_var, "5", "10", "15", "20", "25", "30").pack()
-    tk.Button(root, text="Start Maze", command=lambda: start_maze(size_var)).pack(
-        pady=10
-    )
+    tk.Button(
+        root,
+        text="Start Maze",
+        font=(FONTSTYLE, FONTSIZE),
+        command=lambda: start_maze(size_var),
+    ).pack(pady=10)
 
     size_var = tk.StringVar(value="20")
 
-    tk.Label(root, text="Select Maze Size:", font=("Arial", 12)).pack(pady=(20, 5))
+    tk.Label(root, text="Select Maze Size:", font=(FONTSTYLE, FONTSIZE)).pack(
+        pady=(20, 5)
+    )
 
     # Create a horizontal frame for the radio buttons
     radio_frame = tk.Frame(root)
@@ -234,7 +241,7 @@ def main():
             text=size,
             variable=size_var,
             value=size,
-            font=("Arial", 11),
+            font=(FONTSTYLE, FONTSIZE),
             indicatoron=0,  # Makes them look like buttons instead of circles
             width=4,
             relief="raised",
