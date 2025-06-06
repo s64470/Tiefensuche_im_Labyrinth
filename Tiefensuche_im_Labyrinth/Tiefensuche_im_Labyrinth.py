@@ -7,6 +7,7 @@ CELL_SIZE = 20
 DELAY = 30
 BACKGROUNDCOLOR = "#ffffff"
 CURSORCOLOR = "#a9c6f5"
+global size_var
 
 
 class Cell:
@@ -160,7 +161,7 @@ class MazeApp:
             else:
                 self.current = self.stack.pop()
             self.canvas.after(DELAY, self.step)
-        # in MazeApp.step(), wenn Maze fertig:
+        # in MazeApp.step(), when maze is complete:
         elif not self.maze_generated:
             self.maze_generated = True
             start = self.grid[0][0]
@@ -173,35 +174,41 @@ class MazeApp:
             print(f"A* Laufzeit: {end_time - start_time:.4f} Sekunden")
 
 
+def start_maze(size_var):
+    size = size_var.get()
+    width = height = int(size)
+    maze_width = width * CELL_SIZE
+    maze_height = height * CELL_SIZE
+
+    # Adjust window size
+    x = (screen_width - maze_width) // 2
+    y = (screen_height - maze_height) // 2
+    root.geometry(f"{maze_width}x{maze_height}+{x}+{y}")
+
+    # Remove previous widgets
+    for widget in root.winfo_children():
+        widget.destroy()
+
+    MazeApp(root, width, height)
+
+
 def main():
-    def start_maze():
-        size = size_var.get()
-        width = height = int(size)
-        for widget in root.winfo_children():
-            widget.destroy()
-        MazeApp(root, width, height)
+    global root, screen_width, screen_height, size_var
 
     root = tk.Tk()
     root.title("Maze Generator with A* Solver")
-
-    # Disable resizing
     root.resizable(False, False)
-
-    # Fensterposition zentrieren
-    window_width = 500
-    window_height = 500
 
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-    x = (screen_width - window_width) // 2
-    y = (screen_height - window_height) // 2
-    root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-    # Dropdown
+    # Show dropdown menu
     size_var = tk.StringVar(value="20")
-    tk.Label(root, text="Maze Size:").pack(pady=10)
+    tk.Label(root, text="Maze Size:").pack(pady=(10, 0))
     tk.OptionMenu(root, size_var, "5", "10", "15", "20", "25", "30").pack()
-    tk.Button(root, text="Start Maze", command=start_maze).pack(pady=10)
+    tk.Button(root, text="Start Maze", command=lambda: start_maze(size_var)).pack(
+        pady=10
+    )
 
     root.mainloop()
 
