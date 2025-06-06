@@ -3,6 +3,8 @@ import random
 import heapq
 import time
 
+from tkinter import ttk
+
 CELL_SIZE = 20
 DELAY = 30
 BACKGROUNDCOLOR = "#ffffff"
@@ -210,13 +212,35 @@ def main():
     root.geometry(f"{initial_width}x{initial_height}+{x}+{y}")
 
     # UI elements
-    size_var = tk.StringVar(value="20")
+    # size_var = tk.StringVar(value="20")
 
-    tk.Label(root, text="Select Maze Size:", font=("Arial", 12)).pack(pady=(20, 5))
-    tk.OptionMenu(root, size_var, "5", "10", "15", "20", "25", "30").pack()
+    # tk.Label(root, text="Select Maze Size:", font=("Arial", 12)).pack(pady=(20, 5))
+    # tk.OptionMenu(root, size_var, "5", "10", "15", "20", "25", "30").pack()
     tk.Button(root, text="Start Maze", command=lambda: start_maze(size_var)).pack(
         pady=10
     )
+
+    size_var = tk.StringVar(value="20")
+
+    tk.Label(root, text="Select Maze Size:", font=("Arial", 12)).pack(pady=(20, 5))
+
+    # Create a horizontal frame for the radio buttons
+    radio_frame = tk.Frame(root)
+    radio_frame.pack(pady=(0, 10))
+
+    for size in ["5", "10", "15", "20", "25", "30"]:
+        tk.Radiobutton(
+            radio_frame,
+            text=size,
+            variable=size_var,
+            value=size,
+            font=("Arial", 11),
+            indicatoron=0,  # Makes them look like buttons instead of circles
+            width=4,
+            relief="raised",
+            padx=5,
+            pady=2,
+        ).pack(side="left", padx=3)
 
     root.mainloop()
 
