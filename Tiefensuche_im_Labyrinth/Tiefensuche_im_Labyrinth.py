@@ -6,12 +6,12 @@ import time
 from tkinter import ttk
 
 # Constants used in maze generation
-CELL_SIZE = 20                          # Pixel size of each cell
-DELAY = 30                              # Delay in milliseconds between
-                                        # animation steps
-BACKGROUNDCOLOR = "#ffffff"             # Canvas background color (white)
-CURSORCOLOR = "#a9c6f5"                 # Color to highlight current cell
-                                        # (light blue)
+CELL_SIZE = 20  # Pixel size of each cell
+DELAY = 30  # Delay in milliseconds between
+# animation steps
+BACKGROUNDCOLOR = "#ffffff"  # Canvas background color (white)
+CURSORCOLOR = "#a9c6f5"  # Color to highlight current cell
+# (light blue)
 FONTSTYLE = "Arial"
 FONTSIZE = "11"
 global size_var
