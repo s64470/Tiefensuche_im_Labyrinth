@@ -131,6 +131,7 @@ def reconstruct_path(came_from, current, canvas):
 
 class MazeApp:
     def __init__(self, root, width, height, algo="A*"):
+        self.root = root
         self.width = width
         self.height = height
         self.algo = algo
@@ -173,15 +174,17 @@ class MazeApp:
             self.maze_generated = True
             start = self.grid[0][0]
             goal = self.grid[self.width - 1][self.height - 1]
+
             start_time = time.time()
             if self.algo == "A*":
-                a_star_solver(self.grid, start, goal, self.canvas, self.width, self.height)
+                a_star_solver(
+                    self.grid, start, goal, self.canvas, self.width, self.height
+                )
             elif self.algo == "DFS":
                 dfs_solver(self.grid, start, goal, self.canvas, self.width, self.height)
             end_time = time.time()
+
             print(f"{self.algo} Laufzeit: {end_time - start_time:.4f} Sekunden")
-
-
 
 
 def start_maze(size_var, algo_var):
@@ -196,11 +199,87 @@ def start_maze(size_var, algo_var):
     y = (screen_height - maze_height) // 2
     root.geometry(f"{maze_width}x{maze_height}+{x}+{y}")
 
-    # Remove previous widgets
+    # Remove previous widget
     for widget in root.winfo_children():
         widget.destroy()
 
     MazeApp(root, width, height, algo)
+
+    # Back Button
+    back_button = tk.Button(
+        root,
+        text="Back to Menu",
+        font=(FONTSTYLE, FONTSIZE),
+        command=create_main_menu,
+        # command=main # back to main menu
+    )
+    back_button.place(x=10, y=10)
+
+
+# main menu
+def create_main_menu():
+    # Resize and re-center window
+    initial_width = 400
+    initial_height = 250
+    x = (screen_width - initial_width) // 2
+    y = (screen_height - initial_height) // 2
+    root.geometry(f"{initial_width}x{initial_height}+{x}+{y}")
+
+    # Remove previous widgets (if returning to menu)
+    for widget in root.winfo_children():
+        widget.destroy()
+
+    tk.Label(root, text="Select Maze Size:", font=(FONTSTYLE, FONTSIZE)).pack(
+        pady=(20, 5)
+    )
+
+    radio_frame = tk.Frame(root)
+    radio_frame.pack(pady=(0, 10))
+
+    algo_var = tk.StringVar(value="A*")
+    size_var = tk.StringVar(value="20")
+
+    tk.Label(
+        root, text="Select Pathfinding Algorithm:", font=(FONTSTYLE, FONTSIZE)
+    ).pack(pady=(20, 5))
+
+    algo_frame = tk.Frame(root)
+    algo_frame.pack(pady=(0, 10))
+
+    for algo in ["DFS", "A*"]:
+        tk.Radiobutton(
+            algo_frame,
+            text=algo,
+            variable=algo_var,
+            value=algo,
+            font=(FONTSTYLE, FONTSIZE),
+            indicatoron=0,
+            width=8,
+            relief="raised",
+            padx=5,
+            pady=2,
+        ).pack(side="left", padx=5)
+
+    for size in ["5", "10", "15", "20", "25", "30"]:
+        tk.Radiobutton(
+            radio_frame,
+            text=size,
+            variable=size_var,
+            value=size,
+            font=(FONTSTYLE, FONTSIZE),
+            indicatoron=0,
+            width=4,
+            relief="raised",
+            padx=5,
+            pady=2,
+        ).pack(side="left", padx=3)
+
+    tk.Button(
+        root,
+        text="Start Maze",
+        font=(FONTSTYLE, FONTSIZE),
+        command=lambda: start_maze(size_var, algo_var),
+    ).pack(pady=10)
 
 
 def main():
@@ -270,13 +349,13 @@ def main():
             padx=5,
             pady=2,
         ).pack(side="left", padx=3)
-    
+
     # Start Button
     tk.Button(
         root,
         text="Start Maze",
         font=(FONTSTYLE, FONTSIZE),
-        command=lambda: start_maze(size_var, algo_var)
+        command=lambda: start_maze(size_var, algo_var),
     ).pack(pady=10)
 
     root.mainloop()
