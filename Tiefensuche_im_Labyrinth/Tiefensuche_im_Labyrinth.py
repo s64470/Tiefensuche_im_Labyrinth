@@ -216,12 +216,6 @@ def main():
     y = (screen_height - initial_height) // 2
     root.geometry(f"{initial_width}x{initial_height}+{x}+{y}")
 
-    # UI elements
-    # size_var = tk.StringVar(value="20")
-
-    # tk.Label(root, text="Select Maze Size:", font=("Arial", 12)).pack(pady=(20, 5))
-    # tk.OptionMenu(root, size_var, "5", "10", "15", "20", "25", "30").pack()
-
     size_var = tk.StringVar(value="20")
 
     tk.Label(root, text="Select Maze Size:", font=(FONTSTYLE, FONTSIZE)).pack(
@@ -232,11 +226,9 @@ def main():
     radio_frame = tk.Frame(root)
     radio_frame.pack(pady=(0, 10))
 
-
-
-
     # Pathfinding Algorithm
     algo_var = tk.StringVar(value="A*")  # Standard: A*
+
     tk.Label(
         root, text="Select Pathfinding Algorithm:", font=(FONTSTYLE, FONTSIZE)
     ).pack(pady=(20, 5))
@@ -246,14 +238,14 @@ def main():
     algo_frame.pack(pady=(0, 10))
 
     # Radio Buttons for selecting a pathfinding algorithm
-    for algo in ["A*", "BFS",]:
+    for algo in ["A*", "BFS"]:
         tk.Radiobutton(
             algo_frame,
             text=algo,
             variable=algo_var,
             value=algo,
             font=(FONTSTYLE, FONTSIZE),
-            indicatoron=0,
+            indicatoron=0,  # Makes them look like buttons instead of circles
             width=8,
             relief="raised",
             padx=5,
