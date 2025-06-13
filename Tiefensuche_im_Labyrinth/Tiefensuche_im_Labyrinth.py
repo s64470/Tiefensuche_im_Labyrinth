@@ -3,7 +3,6 @@ import random
 import heapq
 import time
 
-from tkinter import ttk
 
 # Constants used in maze generation
 CELL_SIZE = 20  # Pixel size of each cell
