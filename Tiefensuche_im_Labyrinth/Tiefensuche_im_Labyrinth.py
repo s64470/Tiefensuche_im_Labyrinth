@@ -208,12 +208,14 @@ def start_maze(size_var, algo_var):
     # Back Button
     back_button = tk.Button(
         root,
-        text="Back to Menu",
+        #text="Back to Menu",
+        text="\u2190", # Unicode back arrow
         font=(FONTSTYLE, FONTSIZE),
         command=create_main_menu,
         # command=main # back to main menu
+        relief="groove"
     )
-    back_button.place(x=10, y=10)
+    back_button.place(x=1, y=1)
 
 
 # main menu
