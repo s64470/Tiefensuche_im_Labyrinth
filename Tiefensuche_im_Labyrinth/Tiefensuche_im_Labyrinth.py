@@ -224,10 +224,6 @@ def main():
 
     size_var = tk.StringVar(value="20")
 
-    tk.Label(root, text="Select Pathfinding Algorithm:", font=(FONTSTYLE, FONTSIZE)).pack(
-        pady=(20, 5)
-    )
-
     tk.Label(root, text="Select Maze Size:", font=(FONTSTYLE, FONTSIZE)).pack(
         pady=(20, 5)
     )
@@ -236,6 +232,35 @@ def main():
     radio_frame = tk.Frame(root)
     radio_frame.pack(pady=(0, 10))
 
+
+
+
+    # Pathfinding Algorithm
+    algo_var = tk.StringVar(value="A*")  # Standard: A*
+    tk.Label(
+        root, text="Select Pathfinding Algorithm:", font=(FONTSTYLE, FONTSIZE)
+    ).pack(pady=(20, 5))
+
+    # Create a horizontal frame for the radio buttons
+    algo_frame = tk.Frame(root)
+    algo_frame.pack(pady=(0, 10))
+
+    # Radio Buttons for selecting a pathfinding algorithm
+    for algo in ["A*", "BFS",]:
+        tk.Radiobutton(
+            algo_frame,
+            text=algo,
+            variable=algo_var,
+            value=algo,
+            font=(FONTSTYLE, FONTSIZE),
+            indicatoron=0,
+            width=8,
+            relief="raised",
+            padx=5,
+            pady=2,
+        ).pack(side="left", padx=5)
+
+    # Radio Buttons for selecting maze sizes
     for size in ["5", "10", "15", "20", "25", "30"]:
         tk.Radiobutton(
             radio_frame,
