@@ -191,8 +191,14 @@ def start_maze(size_var, algo_var):
     size = size_var.get()
     algo = algo_var.get()
     width = height = int(size)
-    maze_width = width * CELL_SIZE
+    padding_x = 100  # extra width
+    padding_y = 100  # extra height
+
+    maze_width = width * CELL_SIZE + padding_x
     maze_height = height * CELL_SIZE
+
+    # maze_width = width * CELL_SIZE
+    # maze_height = height * CELL_SIZE
 
     # Adjust window size
     x = (screen_width - maze_width) // 2
@@ -205,17 +211,20 @@ def start_maze(size_var, algo_var):
 
     MazeApp(root, width, height, algo)
 
-    # Back Button
     back_button = tk.Button(
         root,
-        #text="Back to Menu",
-        text="\u2190", # Unicode back arrow
+        # text="Back to Menu",
+        text="\u2190",  # Unicode back arrow
         font=(FONTSTYLE, FONTSIZE),
         command=create_main_menu,
         # command=main # back to main menu
-        relief="groove"
+        relief="groove",
+        width=2,  # width in text units (approximate)
+        height=1,  # height in text units
+        padx=10,  # horizontal padding inside button
+        pady=5,  # vertical padding inside button
     )
-    back_button.place(x=1, y=1)
+    back_button.place(x=2, y=1)
 
 
 # main menu
@@ -227,7 +236,7 @@ def create_main_menu():
     y = (screen_height - initial_height) // 2
     root.geometry(f"{initial_width}x{initial_height}+{x}+{y}")
 
-    # Remove previous widgets (if returning to menu)
+    # Remove previous widget (if returning to menu)
     for widget in root.winfo_children():
         widget.destroy()
 
