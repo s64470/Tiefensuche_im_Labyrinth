@@ -208,7 +208,7 @@ def main():
 
     # Set fixed size for the initial menu window
     initial_width = 400
-    initial_height = 150
+    initial_height = 250
 
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -221,14 +221,12 @@ def main():
 
     # tk.Label(root, text="Select Maze Size:", font=("Arial", 12)).pack(pady=(20, 5))
     # tk.OptionMenu(root, size_var, "5", "10", "15", "20", "25", "30").pack()
-    tk.Button(
-        root,
-        text="Start Maze",
-        font=(FONTSTYLE, FONTSIZE),
-        command=lambda: start_maze(size_var),
-    ).pack(pady=10)
 
     size_var = tk.StringVar(value="20")
+
+    tk.Label(root, text="Select Pathfinding Algorithm:", font=(FONTSTYLE, FONTSIZE)).pack(
+        pady=(20, 5)
+    )
 
     tk.Label(root, text="Select Maze Size:", font=(FONTSTYLE, FONTSIZE)).pack(
         pady=(20, 5)
@@ -251,6 +249,13 @@ def main():
             padx=5,
             pady=2,
         ).pack(side="left", padx=3)
+
+    tk.Button(
+        root,
+        text="Start Maze",
+        font=(FONTSTYLE, FONTSIZE),
+        command=lambda: start_maze(size_var),
+    ).pack(pady=10)
 
     root.mainloop()
 
