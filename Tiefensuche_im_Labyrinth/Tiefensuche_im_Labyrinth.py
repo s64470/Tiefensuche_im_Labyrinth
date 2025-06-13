@@ -130,9 +130,10 @@ def reconstruct_path(came_from, current, canvas):
 
 
 class MazeApp:
-    def __init__(self, root, width, height):
+    def __init__(self, root, width, height, algo="A*"):
         self.width = width
         self.height = height
+        self.algo = algo
         self.canvas = tk.Canvas(
             root,
             width=width * CELL_SIZE,
@@ -172,16 +173,20 @@ class MazeApp:
             self.maze_generated = True
             start = self.grid[0][0]
             goal = self.grid[self.width - 1][self.height - 1]
-
             start_time = time.time()
-            a_star_solver(self.grid, start, goal, self.canvas, self.width, self.height)
+            if self.algo == "A*":
+                a_star_solver(self.grid, start, goal, self.canvas, self.width, self.height)
+            elif self.algo == "DFS":
+                dfs_solver(self.grid, start, goal, self.canvas, self.width, self.height)
             end_time = time.time()
+            print(f"{self.algo} Laufzeit: {end_time - start_time:.4f} Sekunden")
 
-            print(f"A* Laufzeit: {end_time - start_time:.4f} Sekunden")
 
 
-def start_maze(size_var):
+
+def start_maze(size_var, algo_var):
     size = size_var.get()
+    algo = algo_var.get()
     width = height = int(size)
     maze_width = width * CELL_SIZE
     maze_height = height * CELL_SIZE
@@ -195,7 +200,7 @@ def start_maze(size_var):
     for widget in root.winfo_children():
         widget.destroy()
 
-    MazeApp(root, width, height)
+    MazeApp(root, width, height, algo)
 
 
 def main():
@@ -237,7 +242,7 @@ def main():
     algo_frame.pack(pady=(0, 10))
 
     # Radio Buttons for selecting a pathfinding algorithm
-    for algo in ["A*", "BFS"]:
+    for algo in ["DFS", "A*"]:
         tk.Radiobutton(
             algo_frame,
             text=algo,
@@ -265,12 +270,13 @@ def main():
             padx=5,
             pady=2,
         ).pack(side="left", padx=3)
-
+    
+    # Start Button
     tk.Button(
         root,
         text="Start Maze",
         font=(FONTSTYLE, FONTSIZE),
-        command=lambda: start_maze(size_var),
+        command=lambda: start_maze(size_var, algo_var)
     ).pack(pady=10)
 
     root.mainloop()
