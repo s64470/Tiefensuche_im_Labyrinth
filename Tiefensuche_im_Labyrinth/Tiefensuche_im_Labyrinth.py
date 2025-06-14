@@ -227,36 +227,46 @@ def start_maze(size_var, algo_var):
     back_button.place(x=2, y=1)
 
 
-# main menu
 def create_main_menu():
-    # Resize and re-center window
+    # Center and set fixed size for window
     initial_width = 400
     initial_height = 250
     x = (screen_width - initial_width) // 2
     y = (screen_height - initial_height) // 2
     root.geometry(f"{initial_width}x{initial_height}+{x}+{y}")
 
-    # Remove previous widget (if returning to menu)
+    # Clear existing widgets
     for widget in root.winfo_children():
         widget.destroy()
 
+    # Maze size selection
     tk.Label(root, text="Select Maze Size:", font=(FONTSTYLE, FONTSIZE)).pack(
         pady=(20, 5)
     )
-
-    radio_frame = tk.Frame(root)
-    radio_frame.pack(pady=(0, 10))
-
-    algo_var = tk.StringVar(value="A*")
     size_var = tk.StringVar(value="20")
+    size_frame = tk.Frame(root)
+    size_frame.pack(pady=(0, 10))
+    for size in ["5", "10", "15", "20", "25", "30"]:
+        tk.Radiobutton(
+            size_frame,
+            text=size,
+            variable=size_var,
+            value=size,
+            font=(FONTSTYLE, FONTSIZE),
+            indicatoron=0,
+            width=4,
+            relief="raised",
+            padx=5,
+            pady=2,
+        ).pack(side="left", padx=3)
 
+    # Algorithm selection
     tk.Label(
         root, text="Select Pathfinding Algorithm:", font=(FONTSTYLE, FONTSIZE)
     ).pack(pady=(20, 5))
-
+    algo_var = tk.StringVar(value="A*")
     algo_frame = tk.Frame(root)
     algo_frame.pack(pady=(0, 10))
-
     for algo in ["DFS", "A*"]:
         tk.Radiobutton(
             algo_frame,
@@ -271,20 +281,7 @@ def create_main_menu():
             pady=2,
         ).pack(side="left", padx=5)
 
-    for size in ["5", "10", "15", "20", "25", "30"]:
-        tk.Radiobutton(
-            radio_frame,
-            text=size,
-            variable=size_var,
-            value=size,
-            font=(FONTSTYLE, FONTSIZE),
-            indicatoron=0,
-            width=4,
-            relief="raised",
-            padx=5,
-            pady=2,
-        ).pack(side="left", padx=3)
-
+    # Start button
     tk.Button(
         root,
         text="Start Maze",
@@ -294,81 +291,14 @@ def create_main_menu():
 
 
 def main():
-    global root, screen_width, screen_height, size_var
-
+    global root, screen_width, screen_height
     root = tk.Tk()
     root.title("Maze Generator with A* Solver")
     root.resizable(False, False)
-
-    # Set fixed size for the initial menu window
-    initial_width = 400
-    initial_height = 250
-
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-    x = (screen_width - initial_width) // 2
-    y = (screen_height - initial_height) // 2
-    root.geometry(f"{initial_width}x{initial_height}+{x}+{y}")
 
-    size_var = tk.StringVar(value="20")
-
-    tk.Label(root, text="Select Maze Size:", font=(FONTSTYLE, FONTSIZE)).pack(
-        pady=(20, 5)
-    )
-
-    # Create a horizontal frame for the radio buttons
-    radio_frame = tk.Frame(root)
-    radio_frame.pack(pady=(0, 10))
-
-    # Pathfinding Algorithm
-    algo_var = tk.StringVar(value="A*")  # Standard: A*
-
-    tk.Label(
-        root, text="Select Pathfinding Algorithm:", font=(FONTSTYLE, FONTSIZE)
-    ).pack(pady=(20, 5))
-
-    # Create a horizontal frame for the radio buttons
-    algo_frame = tk.Frame(root)
-    algo_frame.pack(pady=(0, 10))
-
-    # Radio Buttons for selecting a pathfinding algorithm
-    for algo in ["DFS", "A*"]:
-        tk.Radiobutton(
-            algo_frame,
-            text=algo,
-            variable=algo_var,
-            value=algo,
-            font=(FONTSTYLE, FONTSIZE),
-            indicatoron=0,  # Makes them look like buttons instead of circles
-            width=8,
-            relief="raised",
-            padx=5,
-            pady=2,
-        ).pack(side="left", padx=5)
-
-    # Radio Buttons for selecting maze sizes
-    for size in ["5", "10", "15", "20", "25", "30"]:
-        tk.Radiobutton(
-            radio_frame,
-            text=size,
-            variable=size_var,
-            value=size,
-            font=(FONTSTYLE, FONTSIZE),
-            indicatoron=0,  # Makes them look like buttons instead of circles
-            width=4,
-            relief="raised",
-            padx=5,
-            pady=2,
-        ).pack(side="left", padx=3)
-
-    # Start Button
-    tk.Button(
-        root,
-        text="Start Maze",
-        font=(FONTSTYLE, FONTSIZE),
-        command=lambda: start_maze(size_var, algo_var),
-    ).pack(pady=10)
-
+    create_main_menu()
     root.mainloop()
 
 
