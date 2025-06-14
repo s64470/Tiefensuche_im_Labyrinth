@@ -230,7 +230,7 @@ def start_maze(size_var, algo_var):
 def create_main_menu():
     # Center and set fixed size for window
     initial_width = 400
-    initial_height = 250
+    initial_height = 350
     x = (screen_width - initial_width) // 2
     y = (screen_height - initial_height) // 2
     root.geometry(f"{initial_width}x{initial_height}+{x}+{y}")
@@ -246,7 +246,7 @@ def create_main_menu():
     size_var = tk.StringVar(value="20")
     size_frame = tk.Frame(root)
     size_frame.pack(pady=(0, 10))
-    for size in ["5", "10", "15", "20", "25", "30"]:
+    for size in ["5", "10", "15", "20", "25", "30", "35"]:
         tk.Radiobutton(
             size_frame,
             text=size,
@@ -281,19 +281,33 @@ def create_main_menu():
             pady=2,
         ).pack(side="left", padx=5)
 
+    # Frame to hold the Start and Exit buttons side by side
+    button_frame = tk.Frame(root)
+    button_frame.pack(pady=10)
+
     # Start button
     tk.Button(
-        root,
+        button_frame,
         text="Start Maze",
         font=(FONTSTYLE, FONTSIZE),
         command=lambda: start_maze(size_var, algo_var),
-    ).pack(pady=10)
+        width=12,
+    ).pack(side="left", padx=10)
+
+    # Exit button
+    tk.Button(
+        button_frame,
+        text="Exit",
+        font=(FONTSTYLE, FONTSIZE),
+        command=root.destroy,
+        width=12,
+    ).pack(side="left", padx=10)
 
 
 def main():
     global root, screen_width, screen_height
     root = tk.Tk()
-    root.title("Maze Generator with A* Solver")
+    root.title("Maze Generator with Pathfinding Algorithm")
     root.resizable(False, False)
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
